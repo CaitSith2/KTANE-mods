@@ -278,8 +278,8 @@ public static class KMBombInfoExtensions
 
     public static int GetBatteryCount(this KMBombInfo bombInfo, int batteryType)
     {
-        //Check "typebatteries" for modded batteries, but check "numbatteries" for vanilla batteries
-        return GetBatteryEntries(bombInfo).Where((x) => x.typebatteries != 0 ? x.typebatteries == batteryType : x.numbatteries == batteryType)
+        //Check "numbatteries" for vanilla batteries, but check "typebatteries" for modded batteries
+        return GetBatteryEntries(bombInfo).Where((x) => x.typebatteries == 0 ? x.numbatteries == batteryType : x.typebatteries == batteryType)
             .Sum((x) => x.numbatteries);
     }
 
@@ -295,8 +295,8 @@ public static class KMBombInfoExtensions
 
     public static int GetBatteryHolderCount(this KMBombInfo bombInfo, int batteryType)
     {
-        //Check "typebatteries" for modded batteries, but check "numbatteries" for vanilla batteries
-        return GetBatteryEntries(bombInfo).Count((x) => x.typebatteries != 0 ? x.typebatteries == batteryType : x.numbatteries == batteryType);
+        //Check "numbatteries" for vanilla batteries, but check "typebatteries" for modded batteries
+        return GetBatteryEntries(bombInfo).Count((x) => x.typebatteries == 0 ? x.numbatteries == batteryType : x.typebatteries == batteryType);
     }
 
     public static int GetPortCount(this KMBombInfo bombInfo)
