@@ -284,7 +284,7 @@ public static class KMBombInfoExtensions
     }
 
     //This should act like the old query method, in case only specific sets are required
-	public static int GetBatteryCount(this KMBombInfo bombInfo, Battery batteryType, int batteryCount)
+	public static int GetBatteryCount(this KMBombInfo bombInfo, KnownBatteryType batteryType, int batteryCount)
     {
         return GetBatteryCount(bombInfo, (int) batteryType, batteryCount);
     }
@@ -311,7 +311,7 @@ public static class KMBombInfoExtensions
     }
 
     //This should act like the old query method, in case only specific sets are required
-    public static int GetBatteryHolderCount(this KMBombInfo bombInfo, Battery batteryType, int batteryCount)
+    public static int GetBatteryHolderCount(this KMBombInfo bombInfo, KnownBatteryType batteryType, int batteryCount)
     {
         return GetBatteryHolderCount(bombInfo, (int) batteryType, batteryCount);
     }
