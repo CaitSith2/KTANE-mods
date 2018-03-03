@@ -283,6 +283,17 @@ public static class KMBombInfoExtensions
             .Sum((x) => x.numbatteries);
     }
 
+    //This should act like the old query method, in case only specific sets are required
+	public static int GetBatteryCount(this KMBombInfo bombInfo, Battery batteryType, int batteryCount)
+    {
+        return GetBatteryCount(bombInfo, (int) batteryType, batteryCount);
+    }
+
+    public static int GetBatteryCount(this KMBombInfo bombInfo, int batteryType, int batteryCount)
+    {
+        return GetBatteryEntries(bombInfo).Where((x) => x.numbatteries == batteryCount && (x.typebatteries == 0 ? x.numbatteries == batteryType : x.typebatteries == batteryType)).Sum((x) => x.numbatteries);
+    }
+
     public static int GetBatteryHolderCount(this KMBombInfo bombInfo)
     {
         return GetBatteryEntries(bombInfo).Count();
@@ -297,6 +308,17 @@ public static class KMBombInfoExtensions
     {
         //Check "numbatteries" for vanilla batteries, but check "typebatteries" for modded batteries
         return GetBatteryEntries(bombInfo).Count((x) => x.typebatteries == 0 ? x.numbatteries == batteryType : x.typebatteries == batteryType);
+    }
+
+    //This should act like the old query method, in case only specific sets are required
+    public static int GetBatteryHolderCount(this KMBombInfo bombInfo, Battery batteryType, int batteryCount)
+    {
+        return GetBatteryHolderCount(bombInfo, (int) batteryType, batteryCount);
+    }
+
+    public static int GetBatteryHolderCount(this KMBombInfo bombInfo, int batteryType, int batteryCount)
+    {
+        return GetBatteryEntries(bombInfo).Count((x) => x.numbatteries == batteryCount && (x.typebatteries == 0 ? x.numbatteries == batteryType : x.typebatteries == batteryType));
     }
 
     public static int GetPortCount(this KMBombInfo bombInfo)

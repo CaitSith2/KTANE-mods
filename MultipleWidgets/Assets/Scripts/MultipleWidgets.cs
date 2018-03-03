@@ -678,7 +678,7 @@ public class MultipleWidgets : MonoBehaviour
 
     int GetTypeOfBatteries()
     {
-        return ( _holderType == BatteryType.NineVolt ? 3 : 2 );
+        return ( _holderType == BatteryType.AAx2 ? 2 : 3 );
     }
 
     public string GetBatteryQueryResponse(string queryKey, string queryInfo)
