@@ -308,9 +308,7 @@ namespace VanillaRuleModifierAssembly.RuleSetGenerators
             return list;
         }
 
-        protected List<Solution> CreateHoldSolutionsList()
-        {
-            var list = new List<Solution>
+        private List<Solution> HoldSolutionsVanilla = new List<Solution>
             {
                 ButtonSolutions.ReleaseOnTimerText("5"),
                 ButtonSolutions.ReleaseOnTimerText("1"),
@@ -318,27 +316,36 @@ namespace VanillaRuleModifierAssembly.RuleSetGenerators
                 ButtonSolutions.ReleaseOnTimerText("3"),
                 ButtonSolutions.ReleaseOnTimerText("4")
             };
-            if (CommonReflectedTypeInfo.IsModdedSeed)
-            {
-                list.AddRange(new[]
+        private List<Solution> HoldSolutionsModded = new List<Solution>
                 {
                     ButtonSolutions.ReleaseOnTimerText("6"),
                     ButtonSolutions.ReleaseOnTimerText("7"),
                     ButtonSolutions.ReleaseOnTimerText("8"),
                     ButtonSolutions.ReleaseOnTimerText("9"),
-                    ButtonSolutions.ReleaseOnTimerText("0")
-                });
-                for (var i = 0; i < 10; i++)
+            ButtonSolutions.ReleaseOnTimerText("0"),
+            ReleaseWhenLeastSignificantSecondIs(0),
+            ReleaseWhenLeastSignificantSecondIs(1),
+            ReleaseWhenLeastSignificantSecondIs(2),
+            ReleaseWhenLeastSignificantSecondIs(3),
+            ReleaseWhenLeastSignificantSecondIs(4),
+            ReleaseWhenLeastSignificantSecondIs(5),
+            ReleaseWhenLeastSignificantSecondIs(6),
+            ReleaseWhenLeastSignificantSecondIs(7),
+            ReleaseWhenLeastSignificantSecondIs(8),
+            ReleaseWhenLeastSignificantSecondIs(9),
+            ReleaseAtAnyTime,
+            ReleaseWhenSecondsAddToMultipleOfFour,
+            ReleaseWhenSecondsDigitsAddToFive,
+            ReleaseWhenSecondsDigitsAddToSeven,
+            ReleaseWhenSecondsDigitsAddToThreeOrThirteen,
+            ReleaseWhenSecondsPrimeOrZero
+        };
+
+        protected List<Solution> CreateHoldSolutionsList()
                 {
-                    list.Add(ReleaseWhenLeastSignificantSecondIs(i));
-                }
-                list.Add(ReleaseAtAnyTime);
-                list.Add(ReleaseWhenSecondsAddToMultipleOfFour);
-                list.Add(ReleaseWhenSecondsDigitsAddToFive);
-                list.Add(ReleaseWhenSecondsDigitsAddToSeven);
-                list.Add(ReleaseWhenSecondsDigitsAddToThreeOrThirteen);
-                list.Add(ReleaseWhenSecondsPrimeOrZero);
-            }
+            var list = new List<Solution>(HoldSolutionsVanilla);
+            if (CommonReflectedTypeInfo.IsModdedSeed)
+                list.AddRange(HoldSolutionsModded);
             foreach (var key in list)
             {
                 if (!solutionWeights.ContainsKey(key))
