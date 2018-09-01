@@ -87,27 +87,6 @@ namespace VanillaRuleModifierAssembly.RuleSetGenerators
             {
                 case 1:
                     return (VennWireRuleSet) GenerateRuleSet(seed);
-                case 2:
-                    var ruleDict = new Dictionary<VennWireState, CutInstruction>
-                    {
-                        {new VennWireState(false, false, false, false), CutInstruction.Cut},
-                        {new VennWireState(false, false, false, true), CutInstruction.CutIfTwoOrMoreBatteriesPresent},
-                        {new VennWireState(false, false, true, false), CutInstruction.Cut},
-                        {new VennWireState(false, false, true, true), CutInstruction.CutIfParallelPortPresent},
-                        {new VennWireState(false, true, false, false), CutInstruction.DoNotCut},
-                        {new VennWireState(false, true, false, true), CutInstruction.CutIfSerialEven},
-                        {new VennWireState(false, true, true, false), CutInstruction.Cut},
-                        {new VennWireState(false, true, true, true), CutInstruction.CutIfParallelPortPresent},
-                        {new VennWireState(true, false, false, false), CutInstruction.CutIfSerialEven},
-                        {new VennWireState(true, false, false, true), CutInstruction.CutIfTwoOrMoreBatteriesPresent},
-                        {new VennWireState(true, false, true, false), CutInstruction.CutIfTwoOrMoreBatteriesPresent},
-                        {new VennWireState(true, false, true, true), CutInstruction.DoNotCut},
-                        {new VennWireState(true, true, false, false), CutInstruction.CutIfSerialEven},
-                        {new VennWireState(true, true, false, true), CutInstruction.Cut},
-                        {new VennWireState(true, true, true, false), CutInstruction.CutIfParallelPortPresent},
-                        {new VennWireState(true, true, true, true), CutInstruction.Cut}
-                    };
-                    return new VennWireRuleSet(ruleDict);
                 default:
                     var ruleSet = (VennWireRuleSet)GenerateRuleSet(seed);
                     if (ruleSet.GetStatesThatRequiresCutting().Count >= 2)

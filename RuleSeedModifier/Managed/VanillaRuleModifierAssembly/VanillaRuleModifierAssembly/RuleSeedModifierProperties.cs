@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace VanillaRuleModifierAssembly
 {
@@ -40,12 +41,12 @@ namespace VanillaRuleModifierAssembly
             switch (seed)
             {
 	            case object[] objects when objects.Length == 2 && objects[0] is int ruleSeed && objects[1] is bool save:
-		            ruleseed = ruleSeed;
+	                ruleseed = ruleSeed == int.MinValue ? 0 : Mathf.Abs(ruleSeed);
 		            saveSettings = save;
 		            break;
 	            case int ruleSeed:
-		            ruleseed = ruleSeed;
-		            break;
+	                ruleseed = ruleSeed == int.MinValue ? 0 : Mathf.Abs(ruleSeed);
+                    break;
 	            default:
 		            throw new ArgumentException(invalidArguments);
             }

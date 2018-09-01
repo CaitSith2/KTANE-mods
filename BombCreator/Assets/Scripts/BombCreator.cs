@@ -222,11 +222,17 @@ public class BombCreator : MonoBehaviour
         TwitchModeButton.OnInteract += delegate
         {
             Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
-            if (!TwitchPlays.TimeMode() && !TwitchPlays.ZenMode())
-                TwitchPlays.SetTimeMode(true);
-            else
-                TwitchPlays.SetZenMode(!TwitchPlays.ZenMode());
-            UpdateDisplay();
+	        if (!TwitchPlays.TimeMode() && !TwitchPlays.ZenMode())
+	        {
+		        TwitchPlays.SetTimeMode(true);
+	        }
+	        else
+	        {
+		        TwitchPlays.SetTimeMode(false);
+		        TwitchPlays.SetZenMode(!TwitchPlays.ZenMode());
+	        }
+
+	        UpdateDisplay();
             return false;
         };
 
@@ -597,7 +603,7 @@ public class BombCreator : MonoBehaviour
 
             currentSeed += count;
             if (currentSeed > int.MaxValue) currentSeed = int.MaxValue;
-            if (currentSeed < int.MinValue) currentSeed = int.MinValue;
+            if (currentSeed < 0) currentSeed = 0;
             VanillaRuleModifier.SetRuleSeed((int)currentSeed);
             UpdateDisplay();
 
@@ -664,7 +670,9 @@ public class BombCreator : MonoBehaviour
         if (sound)
             Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
         _modSettings.WriteSettings();
-        VanillaRuleModifier.SetRuleSeed(VanillaRuleModifier.GetRuleSeed(), true);
+	    var seed = VanillaRuleModifier.GetRuleSeed();
+	    if (seed == int.MinValue) seed = 0;
+		VanillaRuleModifier.SetRuleSeed(Mathf.Abs(seed), true);
         return false;
     }
 
@@ -1695,7 +1703,7 @@ public class BombCreator : MonoBehaviour
                 case "seed":
                     int vanillaSeed;
                     if (!VanillaRuleModifier.Installed()) yield break;
-                    if (!int.TryParse(split[1], out vanillaSeed)) yield break;
+                    if (!int.TryParse(split[1], out vanillaSeed) || vanillaSeed < 0) yield break;
                     yield return AllowBombCreator();
                     yield return AllowPowerUsers(Permissions.BombCreatorAllowedToChangeVanillaSeed, PowerLevel.Admin, "Only those with admin access or higher may set the vanilla seed.");
 

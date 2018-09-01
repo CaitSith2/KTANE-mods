@@ -104,8 +104,8 @@ namespace VanillaRuleModifierAssembly
             _forceRegnerate = true;
         }
 
-        public static bool IsVanillaSeed => (Seed == 1 || Seed == 2 || Seed < -2);
-        public static bool IsModdedSeed => !IsVanillaSeed;
+        public static bool IsVanillaSeed => Seed == 1;
+        public static bool IsModdedSeed => Seed != 1;
 
         public static bool IsRulesReady()
         {

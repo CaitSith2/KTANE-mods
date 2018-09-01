@@ -94,8 +94,12 @@ namespace VanillaRuleModifierAssembly
                 {
                     var settings = File.ReadAllText(modSettings);
                     Settings = JsonConvert.DeserializeObject<ModuleSettings>(settings, new StringEnumConverter());
+                    bool forcewrite = Settings.RuleSeed < 0;
+                    Settings.RuleSeed = Settings.RuleSeed == int.MinValue 
+                        ? 0 
+                        : Mathf.Abs(Settings.RuleSeed);
 
-                    if (Settings.SettingsVersion != ModSettingsVersion)
+                    if (Settings.SettingsVersion != ModSettingsVersion || forcewrite)
                         return WriteSettings();
                     if (!Settings.ResetToDefault) return true;
                     Settings = new ModuleSettings();

@@ -10,6 +10,7 @@ namespace Assets.Scripts
     class TwitchPlays
     {
         private static GameObject _gameObject;
+	    private static bool _tweaks;
 
         private static IDictionary<string, object> Properties
         {
@@ -24,10 +25,17 @@ namespace Assets.Scripts
         //Call this in KMGameState.Setup
         public static IEnumerator Refresh()
         {
+	        _tweaks = false;
             for (var i = 0; i < 4 && _gameObject == null; i++)
             {
                 _gameObject = GameObject.Find("TwitchPlays_Info");
-                yield return null;
+	            if (_gameObject == null)
+	            {
+		            _gameObject = GameObject.Find("Tweaks_Info");
+		            _tweaks = _gameObject != null;
+	            }
+
+	            yield return null;
             }
         }
 
@@ -49,34 +57,55 @@ namespace Assets.Scripts
 
         public static bool ZenMode()
         {
-            return Properties != null && Properties.ContainsKey("ZenMode") && ((bool)Properties["ZenMode"]);
+            return Properties != null && !_tweaks && Properties.ContainsKey("ZenMode") && ((bool)Properties["ZenMode"]);
         }
 
         public static void SetZenMode(bool on)
         {
-            if (Properties == null || !Properties.ContainsKey("ZenMode")) return;
+            if (Properties == null || _tweaks || !Properties.ContainsKey("ZenMode")) return;
             Properties["ZenMode"] = on;
         }
 
         public static int TimeModeTimeLimit(int time = 300, bool force = false)
         {
-            if (force && Properties.ContainsKey("TimeModeTimeLimit"))
-                return ((int) Properties["TimeModeTimeLimit"]) * 60;
+	        var key = _tweaks ? "TimeModeStartingTime" : "TimeModeTimeLimit";
 
-            return TimeMode() && Properties.ContainsKey("TimeModeTimeLimit")
-                ? ((int) Properties["TimeModeTimeLimit"]) * 60
-                : time;
+	        if (Properties.ContainsKey(key) && (force || TimeMode()))
+	        {
+		        int timeint;
+		        if (Properties[key] is float)
+		        {
+			        var timefloat = ((float) Properties[key]) * 60.0F;
+			        timeint = (int) timefloat;
+		        }
+		        else if (Properties[key] is int)
+		        {
+			        timeint = ((int) Properties[key]) * 60;
+		        }
+		        else
+		        {
+			        timeint = time;
+		        }
+
+		        return timeint;
+	        }
+
+	        return time;
         }
 
         public static void SetTimeModeTimeLimit(int time)
         {
-            if (!TimeMode() || !Properties.ContainsKey("TimeModeTimeLimit")) return;
-            Properties["TimeModeTimeLimit"] = (int)Math.Ceiling(time / 60f);
+	        var key = _tweaks ? "TimeModeStartingTime" : "TimeModeTimeLimit";
+			if (!TimeMode() || !Properties.ContainsKey(key)) return;
+	        if (_tweaks)
+		        Properties[key] = (float) Math.Ceiling(time / 60f);
+			else
+				Properties[key] = (int)Math.Ceiling(time / 60f);
         }
 
         public static void SetReward(int reward)
         {
-            if (Properties != null && Properties.ContainsKey("Reward"))
+            if (Properties != null && !_tweaks && Properties.ContainsKey("Reward"))
             {
                 Properties["Reward"] = reward;
             }
@@ -84,7 +113,7 @@ namespace Assets.Scripts
 
         public static void SendMessage(string s)
         {
-            if (Properties != null && Properties.ContainsKey("ircConnectionSendMessage"))
+            if (Properties != null && !_tweaks && Properties.ContainsKey("ircConnectionSendMessage"))
                 Properties["ircConnectionSendMessage"] = s;
         }
     }

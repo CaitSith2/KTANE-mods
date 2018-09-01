@@ -76,7 +76,8 @@ public class VanillaRuleModifier : MonoBehaviour
 
     public void SetRuleSeed(int seed, bool writeSettings)
     {
-        _modSettings.Settings.RuleSeed = seed;
+        if (seed == int.MinValue) seed = 0;
+        _modSettings.Settings.RuleSeed = Mathf.Abs(seed);
         if (writeSettings) _modSettings.WriteSettings();
     }
 
