@@ -654,7 +654,7 @@ public class MorseAMaze : MonoBehaviour
 	    _souvenirQuestionWordPlaying = MorseAMazeRuleGenerator.Words[_rule];
 	    _souvenirQuestionWordList = MorseAMazeRuleGenerator.Words.OrderBy(x => Random.value).ToArray();
 	    
-		_unicorn = BombInfo.IsIndicatorOff("BOB") && BombInfo.GetBatteryHolderCount(2) == 1 && BombInfo.GetBatteryHolderCount(1) == 2 && BombInfo.GetBatteryHolderCount() == 3;
+		_unicorn = BombInfo.IsIndicatorOff("BOB") && BombInfo.GetBatteryCount(2) == 2 && BombInfo.GetBatteryCount(1) == 2 && BombInfo.GetBatteryHolderCount() == 3 && BombInfo.GetBatteryCount() == 4;
 		
 
 		StartCoroutine(PlayWordLocation(_souvenirQuestionWordPlaying));
@@ -910,7 +910,7 @@ public class MorseAMaze : MonoBehaviour
         {
             foreach (var twofactor in BombInfo.GetTwoFactorCodes())
             {
-                BombModule.LogFormat("Two Factor code: ",twofactor);
+                BombModule.LogFormat("Two Factor code: {0}",twofactor);
             }
 
             var sum = BombInfo.GetTwoFactorCodes().Select(twofactor => twofactor / 10).Select(code => code % 10).Sum();

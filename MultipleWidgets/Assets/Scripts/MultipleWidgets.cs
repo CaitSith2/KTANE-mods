@@ -123,6 +123,13 @@ public class MultipleWidgets : MonoBehaviour
 
     private bool _batteries = false;
     private BatteryType _batteryType = BatteryType.NineVolt;
+    private BatteryType _holderType = BatteryType.NineVolt;
+    private class BatterySetInfo
+    {
+        public int numbatteries = 0;
+        public int capacity = 0;
+        public string type = "";
+    }
 
     private bool _twofactor = false;
     private int _key = -1;
@@ -494,7 +501,8 @@ public class MultipleWidgets : MonoBehaviour
             return JsonConvert.SerializeObject(new Dictionary<string, string>
             {
                 {"label",_indicatorLabel},
-                {"on",_indicatorLight.ToString()}
+                {"on",_indicatorLight.ToString()},
+                {"display",IndicatorText.text}
             });
         }
 
@@ -504,7 +512,8 @@ public class MultipleWidgets : MonoBehaviour
             return JsonConvert.SerializeObject(new Dictionary<string, string>
             {
                 {"label",_indicatorLabel},
-                {"color",IndicatorLights[_indicatorLightColor].name}
+                {"color",IndicatorLights[_indicatorLightColor].name},
+                {"display",IndicatorText.text}
             });
         }
         return "";
@@ -673,6 +682,7 @@ public class MultipleWidgets : MonoBehaviour
             && (_batteryType == BatteryType.NineVolt || _batteryType == BatteryType.AAx2));
         var holder = (int)_batteryType - 1;
         if (holder < 0) holder = Random.Range(0, BatteryHolders.Length);
+        _holderType = (BatteryType) (holder + 1);
         DebugLog("Putting {0} {1} into a holder that fits {2} {3}.",
             GetNumberOfBatteries(),
             _batteryType == BatteryType.NineVolt
@@ -705,6 +715,17 @@ public class MultipleWidgets : MonoBehaviour
             return JsonConvert.SerializeObject(new Dictionary<string, int>
             {
                 {"numbatteries",GetNumberOfBatteries()}
+            });
+        }
+
+        if (!_modSettings.EnableExtendedBatteries) return "";
+        if (queryKey == "custombatteries")
+        {
+            return JsonConvert.SerializeObject(new BatterySetInfo
+            {
+                numbatteries = GetNumberOfBatteries(),
+                capacity = (int)_holderType,
+                type = (_holderType == BatteryType.NineVolt ? "NineVolt" : "AA")
             });
         }
         return "";
