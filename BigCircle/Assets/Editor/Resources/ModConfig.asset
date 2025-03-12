@@ -18,6 +18,6 @@ MonoBehaviour:
     you press a wrong part of the circle or press the parts of a circle in the wrong
     order, a strike will be incurred.\n\nModule idea by Zeke.\n\nTwitch plays is supported.\n\r\nPDF
     Manaul: https://ktane.timwi.de/PDF/Big%20Circle.pdf\r\nHTML Manual: https://ktane.timwi.de/HTML/Big%20Circle.html"
-  version: 1.05
+  version: 1.051
   outputFolder: H:\SteamLibrary\SteamApps\common\Keep Talking and Nobody Explodes\mods
   previewImage: {fileID: 2800000, guid: 21f9c4535e329e645820bb742cf1cd57, type: 3}
