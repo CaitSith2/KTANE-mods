@@ -92,15 +92,16 @@ namespace VanillaRuleModifierAssembly.RuleSetGenerators
             }
             else
             {
+                var terms = new List<string>(PossibleTerms);
                 for (var i = 0; i < NumFrequenciesUsed; i++)
                 {
                     var ix = rand.Next(0, freqs.Count);
                     var freq = freqs[ix];
                     freqs.RemoveAt(ix);
-                    ix = rand.Next(0, words.Count);
-                    var value = words[ix];
-                    words.RemoveAt(ix);
-                    dictionary.Add(freq, GetTermForWord(value));
+                    ix = rand.Next(0, terms.Count);
+                    var value = terms[ix];
+                    terms.RemoveAt(ix);
+                    dictionary.Add(freq, value);
                 }
             }
             var ruleSet = new MorseCodeRuleSet(dictionary);
@@ -148,6 +149,11 @@ namespace VanillaRuleModifierAssembly.RuleSetGenerators
                 ? LocalizedExtendedWords[language]
                 : LocalizedExtendedWords["en"];
         }
+
+        protected static List<string> PossibleTerms = new List<string>
+        {
+            "MorseComponent/rule_Option1", "MorseComponent/rule_Option2", "MorseComponent/rule_Option3", "MorseComponent/rule_Option4", "MorseComponent/rule_Option5", "MorseComponent/rule_Option6", "MorseComponent/rule_Option7", "MorseComponent/rule_Option8", "MorseComponent/rule_Option9", "MorseComponent/rule_Option10", "MorseComponent/rule_Option11", "MorseComponent/rule_Option12", "MorseComponent/rule_Option13", "MorseComponent/rule_Option14", "MorseComponent/rule_Option15", "MorseComponent/rule_Option16", "MorseComponent/rule_Option17", "MorseComponent/rule_Option18", "MorseComponent/rule_Option19", "MorseComponent/rule_Option20", "MorseComponent/rule_Option21"
+        };
 
         protected static Dictionary<string, List<string>> LocalizedPossibleWords = new Dictionary<string, List<string>>
         {
